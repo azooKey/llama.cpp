@@ -699,6 +699,8 @@ class Model:
         if chkhsh == "b3f499bb4255f8ca19fccd664443283318f2fd2414d5e0b040fbdd0cc195d6c5":
             # ref: https://huggingface.co/deepseek-ai/DeepSeek-R1-Distill-Qwen-1.5B
             res = "deepseek-r1-qwen"
+        if chkhsh == "acded0362f57dcca1fbdada8d4c87dd782c798cb4c510a70f12a9de6aea57857":
+            res = "gpt2-small-japanese-char"
 
         if res is None:
             logger.warning("\n")
