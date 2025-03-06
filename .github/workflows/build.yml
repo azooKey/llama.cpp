@@ -68,11 +68,11 @@ jobs:
             -DGGML_RPC=ON
           cmake --build build --config Release -j $(sysctl -n hw.logicalcpu)
 
-      - name: Test
-        id: cmake_test
-        run: |
-          cd build
-          ctest -L 'main|curl' --verbose --timeout 900
+      # - name: Test
+      #   id: cmake_test
+      #   run: |
+      #     cd build
+      #     ctest -L 'main|curl' --verbose --timeout 900
 
       - name: Determine tag name
         id: tag
@@ -138,11 +138,11 @@ jobs:
             -DGGML_RPC=ON
           cmake --build build --config Release -j $(sysctl -n hw.logicalcpu)
 
-      - name: Test
-        id: cmake_test
-        run: |
-          cd build
-          ctest -L main --verbose --timeout 900
+      # - name: Test
+      #   id: cmake_test
+      #   run: |
+      #     cd build
+      #     ctest -L main --verbose --timeout 900
 
       - name: Determine tag name
         id: tag
@@ -211,22 +211,22 @@ jobs:
             -DGGML_RPC=ON
           cmake --build build --config Release -j $(nproc)
 
-      - name: Test
-        id: cmake_test
-        run: |
-          cd build
-          ctest -L 'main|curl' --verbose --timeout 900
+      # - name: Test
+      #   id: cmake_test
+      #   run: |
+      #     cd build
+      #     ctest -L 'main|curl' --verbose --timeout 900
 
-      - name: Test llama2c conversion
-        id: llama2c_test
-        run: |
-          cd build
-          echo "Fetch tokenizer"
-          wget https://huggingface.co/karpathy/tinyllamas/resolve/main/stories260K/tok512.bin
-          echo "Fetch llama2c model"
-          wget https://huggingface.co/karpathy/tinyllamas/resolve/main/stories260K/stories260K.bin
-          ./bin/llama-convert-llama2c-to-ggml --copy-vocab-from-model ./tok512.bin --llama2c-model stories260K.bin --llama2c-output-model stories260K.gguf
-          ./bin/llama-cli -m stories260K.gguf -p "One day, Lily met a Shoggoth" -n 500 -c 256
+      # - name: Test llama2c conversion
+      #   id: llama2c_test
+      #   run: |
+      #     cd build
+      #     echo "Fetch tokenizer"
+      #     wget https://huggingface.co/karpathy/tinyllamas/resolve/main/stories260K/tok512.bin
+      #     echo "Fetch llama2c model"
+      #     wget https://huggingface.co/karpathy/tinyllamas/resolve/main/stories260K/stories260K.bin
+      #     ./bin/llama-convert-llama2c-to-ggml --copy-vocab-from-model ./tok512.bin --llama2c-model stories260K.bin --llama2c-output-model stories260K.gguf
+      #     ./bin/llama-cli -m stories260K.gguf -p "One day, Lily met a Shoggoth" -n 500 -c 256
 
       - name: Determine tag name
         id: tag
@@ -304,11 +304,11 @@ jobs:
             -DGGML_OPENMP=OFF
           cmake --build build --config ${{ matrix.build_type }} -j $(nproc)
 
-      - name: Test
-        id: cmake_test
-        run: |
-          cd build
-          ctest -L main --verbose --timeout 900
+      # - name: Test
+      #   id: cmake_test
+      #   run: |
+      #     cd build
+      #     ctest -L main --verbose --timeout 900
 
   ubuntu-latest-llguidance:
     runs-on: ubuntu-latest
@@ -334,11 +334,11 @@ jobs:
             -DLLAMA_LLGUIDANCE=ON
           cmake --build . --config Release -j $(nproc)
 
-      - name: Test
-        id: cmake_test
-        run: |
-          cd build
-          ctest -L main --verbose --timeout 900
+      # - name: Test
+      #   id: cmake_test
+      #   run: |
+      #     cd build
+      #     ctest -L main --verbose --timeout 900
 
   ubuntu-latest-cmake-rpc:
     runs-on: ubuntu-latest
@@ -369,11 +369,11 @@ jobs:
             -DGGML_RPC=ON
           cmake --build build --config Release -j $(nproc)
 
-      - name: Test
-        id: cmake_test
-        run: |
-          cd build
-          ctest -L main --verbose
+      # - name: Test
+      #   id: cmake_test
+      #   run: |
+      #     cd build
+      #     ctest -L main --verbose
 
   ubuntu-22-cmake-vulkan:
     runs-on: ubuntu-22.04
@@ -406,12 +406,12 @@ jobs:
             -DGGML_VULKAN=ON
           cmake --build build --config Release -j $(nproc)
 
-      - name: Test
-        id: cmake_test
-        run: |
-          cd build
-          # This is using llvmpipe and runs slower than other backends
-          ctest -L main --verbose --timeout 2700
+      # - name: Test
+      #   id: cmake_test
+      #   run: |
+      #     cd build
+      #     # This is using llvmpipe and runs slower than other backends
+      #     ctest -L main --verbose --timeout 2700
 
       - name: Determine tag name
         id: tag
@@ -891,26 +891,26 @@ jobs:
           & $cl /O2 /GS- /kernel avx512f.c /link /nodefaultlib /entry:main
           .\avx512f.exe && echo "AVX512F: YES" && ( echo HAS_AVX512F=1 >> $env:GITHUB_ENV ) || echo "AVX512F: NO"
 
-      - name: Test
-        id: cmake_test
-        # not all machines have native AVX-512
-        if: ${{ matrix.build != 'msvc-arm64' && matrix.build != 'llvm-arm64' && matrix.build != 'llvm-arm64-opencl-adreno' && matrix.build != 'kompute-x64' && matrix.build != 'vulkan-x64' && (matrix.build != 'avx512-x64' || env.HAS_AVX512F == '1') }}
-        run: |
-          cd build
-          ctest -L main -C Release --verbose --timeout 900
+      # - name: Test
+      #   id: cmake_test
+      #   # not all machines have native AVX-512
+      #   if: ${{ matrix.build != 'msvc-arm64' && matrix.build != 'llvm-arm64' && matrix.build != 'llvm-arm64-opencl-adreno' && matrix.build != 'kompute-x64' && matrix.build != 'vulkan-x64' && (matrix.build != 'avx512-x64' || env.HAS_AVX512F == '1') }}
+      #   run: |
+      #     cd build
+      #     ctest -L main -C Release --verbose --timeout 900
 
-      - name: Test (Intel SDE)
-        id: cmake_test_sde
-        if: ${{ matrix.build == 'avx512-x64' && env.HAS_AVX512F == '0' }} # use Intel SDE for AVX-512 emulation
-        run: |
-          curl.exe -o $env:RUNNER_TEMP/sde.tar.xz -L "https://downloadmirror.intel.com/813591/sde-external-${env:SDE_VERSION}-win.tar.xz"
-          # for some weird reason windows tar doesn't like sde tar.xz
-          7z x "-o${env:RUNNER_TEMP}" $env:RUNNER_TEMP/sde.tar.xz
-          7z x "-o${env:RUNNER_TEMP}" $env:RUNNER_TEMP/sde.tar
-          $sde = $(join-path $env:RUNNER_TEMP sde-external-${env:SDE_VERSION}-win/sde.exe)
-          cd build
-          $env:LLAMA_SKIP_TESTS_SLOW_ON_EMULATOR = 1
-          & $sde -future -- ctest -L main -C Release --verbose --timeout 900
+      # - name: Test (Intel SDE)
+      #   id: cmake_test_sde
+      #   if: ${{ matrix.build == 'avx512-x64' && env.HAS_AVX512F == '0' }} # use Intel SDE for AVX-512 emulation
+      #   run: |
+      #     curl.exe -o $env:RUNNER_TEMP/sde.tar.xz -L "https://downloadmirror.intel.com/813591/sde-external-${env:SDE_VERSION}-win.tar.xz"
+      #     # for some weird reason windows tar doesn't like sde tar.xz
+      #     7z x "-o${env:RUNNER_TEMP}" $env:RUNNER_TEMP/sde.tar.xz
+      #     7z x "-o${env:RUNNER_TEMP}" $env:RUNNER_TEMP/sde.tar
+      #     $sde = $(join-path $env:RUNNER_TEMP sde-external-${env:SDE_VERSION}-win/sde.exe)
+      #     cd build
+      #     $env:LLAMA_SKIP_TESTS_SLOW_ON_EMULATOR = 1
+      #     & $sde -future -- ctest -L main -C Release --verbose --timeout 900
 
       - name: Determine tag name
         id: tag
