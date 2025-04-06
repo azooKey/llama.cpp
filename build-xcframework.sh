@@ -334,7 +334,7 @@ combine_static_libraries() {
                     ;;
                 "visionos")
                     echo "Marking binary as a framework binary for visionOS..."
-                    vtool -set-build-version xros ${VISIONOS_MIN_OS_VERSION} ${VISIONOS_MIN_OS_VERSION} -replace \
+                    vtool -set-build-version visionos ${VISIONOS_MIN_OS_VERSION} ${VISIONOS_MIN_OS_VERSION} -replace \
                         -output "${base_dir}/${output_lib}" "${base_dir}/${output_lib}"
                     ;;
                 "tvos")
